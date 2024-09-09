@@ -1,11 +1,17 @@
-from flask import Flask
+from flask import Flask, request, render_template_string
 from youtube_transcript_api import YouTubeTranscriptApi
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello from Koyeb'
+def index():
+    return '''
+        <form action="/get_transcript" method="get">
+            <label for="videoId">YouTube Video ID:</label>
+            <input type="text" id="videoId" name="videoId" required>
+            <input type="submit" value="Get Transcript">
+        </form>
+    '''
 
 @app.route('/get_transcript')
 def get_transcript():
@@ -24,6 +30,5 @@ def get_transcript():
     except Exception as e:
         return f"An error occurred: {str(e)}", 500
 
-
-if __name__ == "__main__":
-    app.run()
+if __name__ == '__main__':
+    app.run(debug=True)
